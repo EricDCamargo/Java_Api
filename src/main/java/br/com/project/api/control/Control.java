@@ -1,8 +1,9 @@
-package br.com.projeto.api.controle;
+package br.com.project.api.control;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,33 +11,40 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.projeto.api.modelo.Pessoa;
-import br.com.projeto.api.repository.Repository;
+import br.com.project.api.model.Person;
+import br.com.project.api.repository.Repository;
 
 @RestController
-public class Controle {
+public class Control {
 
     @Autowired
     private Repository action;
 
     @PostMapping("/api")
-    public Pessoa cadastrar(@RequestBody Pessoa obj) {
+    public Person cadastrar(@RequestBody Person obj) {
         return action.save(obj);
     }
 
     @GetMapping("/api")
-    public List<Pessoa> selecionar() {
+    public List<Person> selecionar() {
         return action.findAll();
     }
 
-    @GetMapping("/api/{codigo}")
-    public Pessoa selectById(@PathVariable int codigo) {
-        return action.findById(codigo);
+    @GetMapping("/api/{id}")
+    public Person selectById(@PathVariable int id) {
+        return action.findById(id);
     }
 
     @PutMapping("/api")
-    public Pessoa edit(@RequestBody Pessoa obj) {
+    public Person edit(@RequestBody Person obj) {
         return action.save(obj);
+    }
+
+    @DeleteMapping("/api/{id}")
+    public void delete(@PathVariable int id) {
+        Person obj = selectById(id);
+
+        action.delete(obj);
     }
 
     @GetMapping("")
@@ -55,7 +63,7 @@ public class Controle {
     }
 
     @PostMapping("/person")
-    public Pessoa person(@RequestBody Pessoa p) {
+    public Person person(@RequestBody Person p) {
         return p;
     }
 
