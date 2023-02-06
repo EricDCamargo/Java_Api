@@ -10,5 +10,9 @@ public interface Repository extends CrudRepository<Person, Integer> {
 
   List<Person> findAll();
 
-  Person findById(int codigo);
+  Person findById(int id);
+
+  List<Person> findByOrderByName();
+
+  List<Person> findByNameOrderByAge(String name);
 }

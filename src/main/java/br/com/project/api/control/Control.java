@@ -47,6 +47,21 @@ public class Control {
         action.delete(obj);
     }
 
+    @GetMapping("/api/counter")
+    public long counter() {
+        return action.count();
+    }
+
+    @GetMapping("/api/orderNames")
+    public List<Person> orderNames() {
+        return action.findByOrderByName();
+    }
+
+    @GetMapping("/api/orderNames2")
+    public List<Person> orderNames2() {
+        return action.findByNameOrderByAge("Luiz");
+    }
+
     @GetMapping("")
     public String messege() {
         return "Hello World!";
