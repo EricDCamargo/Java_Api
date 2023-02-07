@@ -15,4 +15,10 @@ public interface Repository extends CrudRepository<Person, Integer> {
   List<Person> findByOrderByName();
 
   List<Person> findByNameOrderByAge(String name);
+
+  List<Person> findByNameContaining(String term);
+
+  List<Person> findByNameStartsWith(String term);
+
+  List<Person> findByNameEndsWith(String term);
 }
