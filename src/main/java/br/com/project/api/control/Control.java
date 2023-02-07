@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.*;
 
 import br.com.project.api.model.Person;
 import br.com.project.api.repository.Repository;
+import br.com.project.api.services.Service;
 
 @RestController
 public class Control {
@@ -20,36 +22,37 @@ public class Control {
     @Autowired
     private Repository action;
 
+    @Autowired
+    private Service service;
+
     // It can save a new element in data-base
     @PostMapping("/api")
-    public Person cadastrar(@RequestBody Person obj) {
-        return action.save(obj);
+    public ResponseEntity<?> cadastrar(@RequestBody Person obj) {
+        return service.register(obj);
     }
 
     // Return all elements that are saved in the data-base
     @GetMapping("/api")
-    public List<Person> selecionar() {
-        return action.findAll();
+    public ResponseEntity<?> select() {
+        return service.select();
     }
 
     // Search for an especifyed id in data-base
     @GetMapping("/api/{id}")
-    public Person selectById(@PathVariable int id) {
-        return action.findById(id);
+    public ResponseEntity<?> selectById(@PathVariable int id) {
+        return service.selectThroughId(id);
     }
 
     // It can edit
     @PutMapping("/api")
-    public Person edit(@RequestBody Person obj) {
-        return action.save(obj);
+    public ResponseEntity<?> edit(@RequestBody Person obj) {
+        return service.edit(obj);
     }
 
     // It can delet the infomed id cor the data-base
     @DeleteMapping("/api/{id}")
-    public void delete(@PathVariable int id) {
-        Person obj = selectById(id);
-
-        action.delete(obj);
+    public ResponseEntity<?> delete(@PathVariable int id) {
+        return service.delete(id);
     }
 
     // Search for how much elements are saved in the data-base
@@ -88,6 +91,19 @@ public class Control {
         return action.findByNameEndsWith("z");
     }
 
+    // Returns the sum of all elements ages
+    @GetMapping("/api/sumAges")
+    public int sumAges() {
+        return action.sumAges();
+    }
+
+    // Returns the elements that have an age that is Greater or Equals the described
+    // value
+    @GetMapping("/api/ageGreaterEquals")
+    public List<Person> ageGreaterEquals() {
+        return action.ageGreaterEquals(20);
+    }
+
     // Returns the described messsege in port 8080
     @GetMapping("")
     public String messege() {
@@ -112,4 +128,8 @@ public class Control {
         return p;
     }
 
+    @GetMapping("/status")
+    public ResponseEntity<?> status() {
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
 }
